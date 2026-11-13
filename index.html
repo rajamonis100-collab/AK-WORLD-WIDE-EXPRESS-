@@ -76,14 +76,11 @@
             </div>
         </div>
 
-        <!-- Staff Portal Container (Sirf Login box hoga shuru mein) -->
+        <!-- Staff Portal Container -->
         <div id="staffModalCard" class="card" style="display:none;">
             <h2>Staff Portal</h2>
             <div id="portalBody">
-                <p style="font-size: 0.9rem; color: #4a5568; margin-top: 0;">Enter staff credentials:</p>
-                <input type="email" id="staffEmail" placeholder="Staff Email">
-                <input type="password" id="staffPassword" placeholder="Staff Password">
-                <button onclick="loginStaff()">Login</button>
+                <!-- Dynamically loaded based on auth state -->
             </div>
         </div>
 
@@ -96,7 +93,7 @@
         </div>
     </div>
 
-    <!-- Secure Dynamic Controller Logic -->
+    <!-- Firebase & Auth Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, child, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -110,31 +107,37 @@
             m.style.display = m.style.display === 'none' ? 'block' : 'none';
         };
 
-        // Jab user login ho ga, tab hi Admin Panel ka sara HTML code dynamically inject ho ga
+        // Strictly check authentication state
         onAuthStateChanged(auth, (user) => {
             const pb = document.getElementById('portalBody');
             if (user) {
                 pb.innerHTML = `
-                    <div style="background: #e6fffa; color: #234e52; padding: 8px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 10px; font-weight: bold;">Status: Logged In</div>
+                    <div style="background: #e6fffa; color: #234e52; padding: 8px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 10px; font-weight: bold;">Status: Logged In (${user.email})</div>
                     <h3>Add / Update Shipment</h3>
                     <input type="text" id="trackingId" placeholder="Tracking ID (e.g., AK-9001)">
                     <input type="text" id="receiverName" placeholder="Receiver Name">
+                    
                     <label style="font-size: 0.85rem; font-weight: bold; color: #4a5568;">Select Status:</label>
                     <select id="status">
-                        <option value="Booking Confirmed">Booking Confirmed</option>
-                        <option value="In Transit">In Transit</option>
-                        <option value="Out for Delivery">Out for Delivery</option>
-                        <option value="Delivered">Delivered</option>
-                        <option value="Hold / Custom Clearance">Hold / Custom Clearance</option>
-                        <option value="Moved / Forwarded to Another Service">Moved / Forwarded to Another Service</option>
+                        <option value="BOOKING CONFIRMED">BOOKING CONFIRMED</option>
+                        <option value="COLLECTION">COLLECTION</option>
+                        <option value="ARRIVED AT SORT FACILITY LAHORE">ARRIVED AT SORT FACILITY LAHORE</option>
+                        <option value="DEPARTURE FROM LAHORE">DEPARTURE FROM LAHORE</option>
+                        <option value="IN TRANSIT TO DESTINATION">IN TRANSIT TO DESTINATION</option>
+                        <option value="IN CLEARANCE AT DESTINATION">IN CLEARANCE AT DESTINATION</option>
+                        <option value="ON THE WAY">ON THE WAY</option>
+                        <option value="ARRIVED AT DELIVERY FACILITY">ARRIVED AT DELIVERY FACILITY</option>
+                        <option value="OUT FOR DELIVERY">OUT FOR DELIVERY</option>
+                        <option value="DELIVERED✅">DELIVERED✅</option>
                     </select>
-                    <input type="text" id="customStatus" placeholder="Custom Status Note (Optional)">
-                    <input type="text" id="forwardedTo" placeholder="Forwarded To (Optional)">
+
                     <button onclick="saveParcel()">Save / Update Shipment</button>
                     <hr style="border:0; border-top:1px solid #cbd5e0; margin:15px 0;">
+                    
                     <h3 style="color: var(--danger-color);">Delete Shipment</h3>
-                    <input type="text" id="deleteId" placeholder="Waybill ID to Delete">
-                    <button class="delete-btn" onclick="deleteParcel()">Delete Record</button>
+                    <input type="text" id="deleteId" placeholder="Enter Waybill ID to Delete">
+                    <button class="delete-btn" onclick="deleteParcel()">Delete Shipment Record</button>
+                    
                     <button class="logout-btn" onclick="logoutStaff()">Logout & Close</button>
                 `;
             } else {
@@ -151,11 +154,14 @@
             const e = document.getElementById('staffEmail').value.trim();
             const p = document.getElementById('staffPassword').value.trim();
             if(!e || !p) { alert("Enter email and password!"); return; }
-            signInWithEmailAndPassword(auth, e, p).catch(err => alert("Login Failed: " + err.message));
+            signInWithEmailAndPassword(auth, e, p)
+                .then(() => { alert("Login Successful!"); })
+                .catch(err => { alert("Login Failed: " + err.message); });
         };
 
         window.logoutStaff = function() {
             signOut(auth).then(() => {
+                alert("Logged out successfully!");
                 document.getElementById('staffModalCard').style.display = 'none';
             });
         };
@@ -163,34 +169,48 @@
         window.saveParcel = function() {
             const id = document.getElementById('trackingId').value.trim();
             const name = document.getElementById('receiverName').value.trim();
-            const ds = document.getElementById('status').value;
-            const cs = document.getElementById('customStatus').value.trim();
-            const fw = document.getElementById('forwardedTo').value.trim();
-            if(!id || !name) { alert("Enter ID and Receiver Name!"); return; }
-            const fs = cs !== '' ? cs : ds, tm = new Date().toISOString(), dbRef = ref(db);
+            const statusVal = document.getElementById('status').value;
+            
+            if(!id || !name) { alert("Please enter Tracking ID and Receiver Name!"); return; }
+            
+            const tm = new Date().toISOString();
+            const dbRef = ref(db);
+            
             get(child(dbRef, `ak_express_parcels/${id}`)).then(snap => {
                 let tl = snap.exists() && snap.val().timeline ? snap.val().timeline : [];
-                tl.unshift({ status: fs, forwardedTo: fw || '', updatedAt: tm });
-                set(ref(db, 'ak_express_parcels/' + id), { receiverName: name, status: fs, forwardedTo: fw || '', updatedAt: tm, timeline: tl }).then(() => {
-                    alert("Saved successfully!");
+                tl.unshift({ status: statusVal, updatedAt: tm });
+                
+                set(ref(db, 'ak_express_parcels/' + id), { 
+                    receiverName: name, 
+                    status: statusVal, 
+                    updatedAt: tm, 
+                    timeline: tl 
+                }).then(() => {
+                    alert("Shipment saved & updated successfully!");
                     document.getElementById('trackingId').value = '';
                     document.getElementById('receiverName').value = '';
                 });
-            });
+            }).catch(err => alert("Error: " + err.message));
         };
 
         window.deleteParcel = function() {
             const id = document.getElementById('deleteId').value.trim();
-            if(!id) { alert("Enter ID to delete!"); return; }
-            if(confirm(`Delete shipment ${id}?`)) {
-                remove(ref(db, 'ak_express_parcels/' + id)).then(() => alert("Deleted successfully!"));
+            if(!id) { alert("Please enter a Waybill ID to delete!"); return; }
+            if(confirm(`Are you sure you want to delete shipment ${id}?`)) {
+                remove(ref(db, 'ak_express_parcels/' + id))
+                    .then(() => {
+                        alert("Shipment deleted successfully from database!");
+                        document.getElementById('deleteId').value = '';
+                    })
+                    .catch(err => alert("Error deleting shipment: " + err.message));
             }
         };
 
         window.trackParcel = function() {
             const id = document.getElementById('searchId').value.trim();
             const rb = document.getElementById('resultBox');
-            if(!id) { alert("Enter tracking ID"); return; }
+            if(!id) { alert("Please enter a tracking ID"); return; }
+            
             get(child(ref(db), `ak_express_parcels/${id}`)).then(snap => {
                 rb.style.display = 'block';
                 if(snap.exists()) {
@@ -199,18 +219,19 @@
                     if(d.timeline && Array.isArray(d.timeline)) {
                         th = '<div style="margin-top:15px; font-weight:bold; font-size:0.9rem; color:#1a365d;">Shipment Timeline:</div><div class="timeline">';
                         d.timeline.forEach(item => {
-                            let ft = item.forwardedTo ? `<br><small style="color: #2b6cb0;">Forwarded To: ${item.forwardedTo}</small>` : '';
-                            th += `<div class="timeline-item"><div class="timeline-date">${new Date(item.updatedAt).toLocaleString()}</div><div class="timeline-status">${item.status}</div>${ft}</div>`;
+                            th += `<div class="timeline-item"><div class="timeline-date">${new Date(item.updatedAt).toLocaleString()}</div><div class="timeline-status">${item.status}</div></div>`;
                         });
                         th += '</div>';
                     } else {
-                        let fi = d.forwardedTo ? `<br><strong>Moved/Forwarded To:</strong> <span style="color: #2b6cb0;">${d.forwardedTo}</span>` : '';
-                        th = `<strong>Status:</strong> <span style="color: #2b6cb0;">${d.status}</span><br><strong>Receiver:</strong> ${d.receiverName}${fi}`;
+                        th = `<strong>Status:</strong> <span style="color: #2b6cb0;">${d.status}</span><br><strong>Receiver:</strong> ${d.receiverName}`;
                     }
                     rb.innerHTML = `<strong>Receiver Name:</strong> ${d.receiverName}<hr style="border:0; border-top:1px solid #cbd5e0; margin:10px 0;">${th}`;
                 } else {
-                    rb.innerHTML = "No shipment found with this Tracking ID.";
+                    rb.innerHTML = "No shipment found with this Tracking / Waybill ID.";
                 }
+            }).catch(err => {
+                rb.style.display = 'block';
+                rb.innerHTML = "Error fetching data: " + err.message;
             });
         };
     </script>
