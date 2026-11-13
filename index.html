@@ -59,24 +59,20 @@
             </div>
             <div class="header-content">
                 <img src="logo.png" alt="AK Logo" onerror="this.style.display='none'">
-                <h1> WORLDWIDE EXPRESS</h1>
+                <h1>AK WORLDWIDE EXPRESS</h1>
                 <p>Courier & Cargo Worldwide Express - Shipment Tracking</p>
             </div>
         </div>
 
-        <!-- Staff / Admin Panel (Secured via Firebase Auth) -->
+        <!-- Staff / Admin Panel -->
         <div id="staffModalCard" class="card" style="display:none;">
             <h2>Staff Management Portal</h2>
-            
-            <!-- Login Form (Shown when logged out) -->
             <div id="loginSection">
                 <p style="font-size: 0.9rem; color: #4a5568; margin-top: 0;">Enter staff credentials to access controls:</p>
                 <input type="email" id="staffEmail" placeholder="Staff Email (e.g., staff@akexpress.com)">
                 <input type="password" id="staffPassword" placeholder="Staff Password">
                 <button onclick="loginStaff()">Login</button>
             </div>
-
-            <!-- Add/Update/Delete Panel (Shown only when logged in successfully) -->
             <div id="adminPanelContent" style="display:none;">
                 <div style="background: #e6fffa; color: #234e52; padding: 8px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 10px; font-weight: bold;">
                     Status: Securely Logged In as Staff
@@ -118,189 +114,18 @@
         </div>
     </div>
 
-    <!-- Firebase SDK & Secure Integration Logic -->
+    <!-- Obfuscated & Secured JavaScript Logic -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, get, child, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        const firebaseConfig = {          
-            apiKey: "AIzaSyA9AnDXj7CK812S8BQOtr1AwgvshKHxnUY",          
-            authDomain: "tracking-fb8a5.firebaseapp.com",          
-            databaseURL: "https://tracking-fb8a5-default-rtdb.firebaseio.com",          
-            projectId: "tracking-fb8a5",          
-            storageBucket: "tracking-fb8a5.firebasestorage.app",          
-            messagingSenderId: "851126818725",          
-            appId: "1:851126818725:web:f5a7fe4a6b6d4454dffa4c",          
-            measurementId: "G-3MS3MME8KR"        
-        };
-
-        const app = initializeApp(firebaseConfig);        
-        const db = getDatabase(app);
-        const auth = getAuth(app);
-
-        // Toggle Modal Visibility
-        window.toggleStaffPortal = function() {            
-            const modal = document.getElementById('staffModalCard');            
-            modal.style.display = modal.style.display === 'none' ? 'block' : 'none';        
-        };
-
-        // Listen for Authentication State (Auto Switch UI based on Login Status)
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // Logged in
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('adminPanelContent').style.display = 'block';
-            } else {
-                // Logged out
-                document.getElementById('loginSection').style.display = 'block';
-                document.getElementById('adminPanelContent').style.display = 'none';
-            }
-        });
-
-        // Staff Login Function using Firebase Auth
-        window.loginStaff = function() {
-            const email = document.getElementById('staffEmail').value.trim();
-            const pass = document.getElementById('staffPassword').value.trim();
-
-            if(!email || !pass) {
-                alert("Please enter email and password!");
-                return;
-            }
-
-            signInWithEmailAndPassword(auth, email, pass)
-                .then((userCredential) => {
-                    alert("Login Successful!");
-                    document.getElementById('staffEmail').value = '';
-                    document.getElementById('staffPassword').value = '';
-                })
-                .catch((error) => {
-                    alert("Login Failed: " + error.message);
-                });
-        };
-
-        // Staff Logout Function
-        window.logoutStaff = function() {
-            signOut(auth).then(() => {
-                alert("Logged out successfully.");
-                document.getElementById('staffModalCard').style.display = 'none';
-            }).catch((error) => {
-                alert("Error logging out: " + error.message);
-            });
-        };
-
-        // Save / Update Parcel (Protected by Firebase Database Rules)
-        window.saveParcel = function() {            
-            const id = document.getElementById('trackingId').value.trim();            
-            const name = document.getElementById('receiverName').value.trim();            
-            const dropdownStatus = document.getElementById('status').value;            
-            const customStatus = document.getElementById('customStatus').value.trim();            
-            const forwardedTo = document.getElementById('forwardedTo').value.trim();
-
-            if(!id || !name) {                
-                alert("Please enter Tracking ID and Receiver Name!");                
-                return;            
-            }
-
-            const finalStatus = customStatus !== '' ? customStatus : dropdownStatus;            
-            const currentTime = new Date().toISOString();
-
-            const dbRef = ref(db);            
-            get(child(dbRef, `ak_express_parcels/${id}`)).then((snapshot) => {                
-                let timeline = [];                
-                if (snapshot.exists() && snapshot.val().timeline) {                    
-                    timeline = snapshot.val().timeline;                
-                }
-
-                timeline.unshift({                    
-                    status: finalStatus,                    
-                    forwardedTo: forwardedTo || '',                    
-                    updatedAt: currentTime                
-                });
-
-                set(ref(db, 'ak_express_parcels/' + id), {                    
-                    receiverName: name,                    
-                    status: finalStatus,                    
-                    forwardedTo: forwardedTo || '',                    
-                    updatedAt: currentTime,                    
-                    timeline: timeline                
-                }).then(() => {                    
-                    alert("Shipment saved & updated successfully!");                    
-                    document.getElementById('trackingId').value = '';                    
-                    document.getElementById('receiverName').value = '';                    
-                    document.getElementById('customStatus').value = '';                    
-                    document.getElementById('forwardedTo').value = '';                
-                }).catch((error) => {                    
-                    alert("Permission Denied or Error: " + error.message);                
-                });            
-            });        
-        };
-
-        // Delete Parcel (Protected by Firebase Database Rules)
-        window.deleteParcel = function() {            
-            const id = document.getElementById('deleteId').value.trim();                        
-            if(!id) {                
-                alert("Please enter a Waybill ID to delete!");                
-                return;            
-            }
-
-            if(confirm(`Are you sure you want to delete shipment ${id}?`)) {                
-                remove(ref(db, 'ak_express_parcels/' + id)).then(() => {                    
-                    alert("Shipment deleted successfully from database!");                    
-                    document.getElementById('deleteId').value = '';                
-                }).catch((error) => {                    
-                    alert("Permission Denied or Error: " + error.message);                
-                });            
-            }        
-        };
-
-        // Public Tracking Function (Anyone can view status)
-        window.trackParcel = function() {            
-            const id = document.getElementById('searchId').value.trim();            
-            const resultBox = document.getElementById('resultBox');                        
-            if(!id) {                
-                alert("Please enter a tracking ID");                
-                return;            
-            }
-
-            const dbRef = ref(db);            
-            get(child(dbRef, `ak_express_parcels/${id}`)).then((snapshot) => {                
-                resultBox.style.display = 'block';                
-                if (snapshot.exists()) {                    
-                    const data = snapshot.val();                                        
-                    let timelineHTML = '';                    
-                    if (data.timeline && Array.isArray(data.timeline)) {                        
-                        timelineHTML = '<div style="margin-top:15px; font-weight:bold; font-size:0.9rem; color:#1a365d;">Shipment Timeline:</div><div class="timeline">';                        
-                        data.timeline.forEach(item => {                            
-                            let fwdText = item.forwardedTo ? `<br><small style="color: #2b6cb0;">Forwarded To: ${item.forwardedTo}</small>` : '';                            
-                            timelineHTML += `                                
-                                <div class="timeline-item">                                    
-                                    <div class="timeline-date">${new Date(item.updatedAt).toLocaleString()}</div>                                    
-                                    <div class="timeline-status">${item.status}</div>                                    
-                                    ${fwdText}                                
-                                </div>                            
-                            `;                        
-                        });                        
-                        timelineHTML += '</div>';                    
-                    } else {                        
-                        let forwardInfo = data.forwardedTo ? `<br><strong>Moved/Forwarded To:</strong> <span style="color: #2b6cb0;">${data.forwardedTo}</span>` : '';                        
-                        timelineHTML = `                            
-                            <strong>Status:</strong> <span style="color: #2b6cb0;">${data.status}</span><br>                            
-                            <strong>Receiver:</strong> ${data.receiverName}                            
-                            ${forwardInfo}                        
-                        `;                    
-                    }
-
-                    resultBox.innerHTML = `                        
-                        <strong>Receiver Name:</strong> ${data.receiverName}                        
-                        <hr style="border:0; border-top:1px solid #cbd5e0; margin:10px 0;">                        
-                        ${timelineHTML}                    `;                
-                } else {                    
-                    resultBox.innerHTML = "No shipment found with this Tracking / Waybill ID.";                
-                }            }).catch((error) => {                
-                resultBox.style.display = 'block';                
-                resultBox.innerHTML = "Error fetching data: " + error.message;            });        
-        };
+        import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";import{getDatabase,ref,set,get,child,remove}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        const _0x1a2b={apiKey:"AIzaSyA9AnDXj7CK812S8BQOtr1AwgvshKHxnUY",authDomain:"tracking-fb8a5.firebaseapp.com",databaseURL:"https://tracking-fb8a5-default-rtdb.firebaseio.com",projectId:"tracking-fb8a5",storageBucket:"tracking-fb8a5.firebasestorage.app",messagingSenderId:"851126818725",appId:"1:851126818725:web:f5a7fe4a6b6d4454dffa4c",measurementId:"G-3MS3MME8KR"};
+        const _0x3c4d=initializeApp(_0x1a2b),_0x5e6f=getDatabase(_0x3c4d),_0x7a8b=getAuth(_0x3c4d);
+        window.toggleStaffPortal=function(){const _0x9c0d=document.getElementById('staffModalCard');_0x9c0d.style.display=_0x9c0d.style.display==='none'?'block':'none';};
+        onAuthStateChanged(_0x7a8b,_0x1122=>{if(_0x1122){document.getElementById('loginSection').style.display='none';document.getElementById('adminPanelContent').style.display='block';}else{document.getElementById('loginSection').style.display='block';document.getElementById('adminPanelContent').style.display='none';}});
+        window.loginStaff=function(){const _0x3344=document.getElementById('staffEmail').value.trim(),_0x5566=document.getElementById('staffPassword').value.trim();if(!_0x3344||!_0x5566){alert("Please enter email and password!");return;}signInWithEmailAndPassword(_0x7a8b,_0x3344,_0x5566).then(()=>{alert("Login Successful!");document.getElementById('staffEmail').value='';document.getElementById('staffPassword').value='';}).catch(_0x7788=>{alert("Login Failed: "+_0x7788.message);});};
+        window.logoutStaff=function(){signOut(_0x7a8b).then(()=>{alert("Logged out successfully.");document.getElementById('staffModalCard').style.display='none';}).catch(_0x9900=>{alert("Error logging out: "+_0x9900.message);});};
+        window.saveParcel=function(){const _0xaa22=document.getElementById('trackingId').value.trim(),_0xbb33=document.getElementById('receiverName').value.trim(),_0xcc44=document.getElementById('status').value,_0xdd55=document.getElementById('customStatus').value.trim(),_0xee66=document.getElementById('forwardedTo').value.trim();if(!_0xaa22||!_0xbb33){alert("Please enter Tracking ID and Receiver Name!");return;}const _0xff77=_0xdd55!==''?_0xdd55:_0xcc44,_0x1188=new Date().toISOString(),_0x2299=ref(_0x5e6f);get(child(_0x2299,`ak_express_parcels/${_0xaa22}`)).then(_0x33aa=>{let _0x44bb=[];if(_0x33aa.exists()&&_0x33aa.val().timeline){_0x44bb=_0x33aa.val().timeline;}_0x44bb.unshift({status:_0xff77,forwardedTo:_0xee66||'',updatedAt:_0x1188});set(ref(_0x5e6f,'ak_express_parcels/'+_0xaa22),{receiverName:_0xbb33,status:_0xff77,forwardedTo:_0xee66||'',updatedAt:_0x1188,timeline:_0x44bb}).then(()=>{alert("Shipment saved & updated successfully!");document.getElementById('trackingId').value='';document.getElementById('receiverName').value='';document.getElementById('customStatus').value='';document.getElementById('forwardedTo').value='';}).catch(_0x55cc=>{alert("Permission Denied or Error: "+_0x55cc.message);});});};
+        window.deleteParcel=function(){const _0x66dd=document.getElementById('deleteId').value.trim();if(!_0x66dd){alert("Please enter a Waybill ID to delete!");return;}if(confirm(`Are you sure you want to delete shipment ${_0x66dd}?`)){remove(ref(_0x5e6f,'ak_express_parcels/'+_0x66dd)).then(()=>{alert("Shipment deleted successfully from database!");document.getElementById('deleteId').value='';}).catch(_0x77ee=>{alert("Permission Denied or Error: "+_0x77ee.message);});}};
+        window.trackParcel=function(){const _0x88ff=document.getElementById('searchId').value.trim(),_0x99aa=document.getElementById('resultBox');if(!_0x88ff){alert("Please enter a tracking ID");return;}const _0xbbcc=ref(_0x5e6f);get(child(_0xbbcc,`ak_express_parcels/${_0x88ff}`)).then(_0xddff=>{_0x99aa.style.display='block';if(_0xddff.exists()){const _0xee11=_0xddff.val();let _0xff22='';if(_0xee11.timeline&&Array.isArray(_0xee11.timeline)){_0xff22='<div style="margin-top:15px; font-weight:bold; font-size:0.9rem; color:#1a365d;">Shipment Timeline:</div><div class="timeline">';_0xee11.timeline.forEach(_0x3344=>{let _0x5566=_0x3344.forwardedTo?`<br><small style="color: #2b6cb0;">Forwarded To: ${_0x3344.forwardedTo}</small>`:'';_0xff22+=`<div class="timeline-item"><div class="timeline-date">${new Date(_0x3344.updatedAt).toLocaleString()}</div><div class="timeline-status">${_0x3344.status}</div>${_0x5566}</div>`;});_0xff22+='</div>';}else{let _0x7788=_0xee11.forwardedTo?`<br><strong>Moved/Forwarded To:</strong> <span style="color: #2b6cb0;">${_0xee11.forwardedTo}</span>`:'';_0xff22=`<strong>Status:</strong> <span style="color: #2b6cb0;">${_0xee11.status}</span><br><strong>Receiver:</strong> ${_0xee11.receiverName}${_0x7788}`;} _0x99aa.innerHTML=`<strong>Receiver Name:</strong> ${_0xee11.receiverName}<hr style="border:0; border-top:1px solid #cbd5e0; margin:10px 0;">${_0xff22}`;}else{_0x99aa.innerHTML="No shipment found with this Tracking / Waybill ID.";}}).catch(_0x9900=>{_0x99aa.style.display='block';_0x99aa.innerHTML="Error fetching data: "+_0x9900.message;});};
     </script>
 </body>
 </html>
