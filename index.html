@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AK Worldwide Express | International Courier & Global Logistics</title>
+    <title>AK Worldwide Express</title>
     
     <!-- Strict Security: Disable Right Click & Inspect Shortcuts -->
     <script>
@@ -35,23 +35,19 @@
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg-light); color: var(--text-dark); margin: 0; padding: 0; user-select: none; line-height: 1.55; }
 
-        /* Top Helpline Strip */
-        .utility-bar { background: var(--brand-blue-dark); color: #e2e8f0; font-size: 0.78rem; padding: 7px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .utility-inner { max-width: 1040px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-        .utility-contact { display: flex; align-items: center; gap: 18px; }
-        .utility-contact a { color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 6px; }
-        .utility-contact a:hover { color: #fca5a5; text-decoration: underline; }
-
-        /* Blue & Red Corporate Top Navigation */
+        /* Clean Top Navigation with 3-Line Hamburger Menu */
         .top-nav { background: var(--brand-blue); border-bottom: 4px solid var(--brand-red); padding: 0 20px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 12px rgba(15,23,42,0.18); }
-        .nav-inner { max-width: 1040px; width: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-        .nav-links { display: flex; gap: 22px; font-size: 0.84rem; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 0.5px; }
-        .nav-links a { text-decoration: none; color: #e2e8f0; cursor: pointer; padding: 6px 2px; border-bottom: 2px solid transparent; transition: 0.2s; }
-        .nav-links a:hover, .nav-links a.active-link { color: var(--white); border-bottom-color: var(--brand-red); }
+        .nav-inner { max-width: 1040px; width: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
         
-        /* Simple User Icon Login Trigger */
-        .staff-trigger { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28); cursor: pointer; color: var(--white); transition: 0.2s; padding: 0; }
-        .staff-trigger:hover { background: var(--brand-red); border-color: var(--brand-red); transform: scale(1.05); }
+        /* Hamburger Menu Icon (3 Lines) */
+        .menu-toggle { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 6px; }
+        .menu-toggle span { display: block; width: 24px; height: 3px; background: var(--white); border-radius: 2px; transition: 0.2s; }
+
+        /* Dropdown Navigation Menu */
+        .dropdown-menu { position: absolute; top: 60px; left: 0; background: var(--white); width: 260px; box-shadow: 0 10px 25px rgba(15,23,42,0.18); border-radius: 4px; border-top: 3px solid var(--brand-red); display: none; flex-direction: column; z-index: 1000; overflow: hidden; }
+        .dropdown-menu.active { display: flex; }
+        .dropdown-menu a { padding: 14px 18px; color: var(--text-dark); text-decoration: none; font-size: 0.88rem; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #f1f5f9; transition: 0.2s; display: flex; align-items: center; gap: 10px; }
+        .dropdown-menu a:hover { background: var(--brand-blue-light); color: var(--brand-blue); }
 
         /* Hero Video Banner Section */
         .hero-section { position: relative; width: 100%; height: 280px; background: var(--brand-blue-dark); overflow: hidden; }
@@ -61,29 +57,26 @@
         /* Main Layout Container */
         .main-container { max-width: 960px; margin: -95px auto 40px auto; padding: 0 16px; position: relative; z-index: 20; }
 
-        /* Primary Tracking Card */
+        /* Primary Tracking Hero Card */
         .tracking-hero-card { background: var(--white); border-radius: 5px; box-shadow: 0 10px 26px rgba(15,23,42,0.12); padding: 28px 32px; margin-bottom: 24px; border-top: 4px solid var(--brand-red); }
-        .tracking-header-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+        .tracking-header-row { margin-bottom: 14px; }
         .tracking-hero-card h1 { margin: 0 0 4px 0; font-size: 1.48rem; font-weight: 800; color: var(--brand-blue-dark); letter-spacing: -0.3px; }
         .tracking-hero-card p.subtitle { margin: 0; font-size: 0.88rem; color: var(--text-muted); }
-        
-        .direct-helpline-badge { background: var(--brand-blue-light); border: 1px solid #bfdbfe; padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; color: var(--brand-blue); font-weight: 700; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; transition: 0.2s; }
-        .direct-helpline-badge:hover { background: var(--brand-blue); color: var(--white); }
 
-        .track-input-group { display: flex; gap: 0; border: 2px solid var(--brand-blue); border-radius: 4px; overflow: hidden; background: var(--white); }
+        .track-input-group { display: flex; gap: 0; border: 2px solid var(--brand-blue); border-radius: 4px; overflow: hidden; background: var(--white); margin-top: 14px; }
         .track-input-group input { flex: 1; border: none; padding: 15px 16px; font-size: 1rem; color: var(--text-dark); outline: none; font-weight: 500; }
         .track-input-group button { width: auto; min-width: 155px; background: var(--brand-red); color: var(--white); border: none; padding: 0 28px; font-size: 0.94rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; cursor: pointer; transition: background 0.2s; margin: 0; border-radius: 0; }
         .track-input-group button:hover { background: var(--brand-red-dark); }
 
-        /* Dedicated Route View Section (/track, /free-pickup, /get-quote, /terms, /privacy-policy) */
+        /* Dedicated Sub-Page View */
         .route-page-card { background: var(--white); border-radius: 5px; box-shadow: 0 10px 26px rgba(15,23,42,0.12); padding: 28px 32px; margin-bottom: 24px; border-top: 4px solid var(--brand-red); display: none; }
         .route-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--brand-blue); padding-bottom: 12px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         .route-header h2 { margin: 0; font-size: 1.35rem; font-weight: 800; color: var(--brand-blue-dark); }
         .back-home-btn { background: var(--brand-blue); color: var(--white); border: none; padding: 8px 16px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer; text-transform: uppercase; text-decoration: none; display: inline-block; }
         .back-home-btn:hover { background: var(--brand-red); }
 
-        /* Interactive 3-Column Quick Action Cards */
-        .quick-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+        /* Interactive 2-Column Quick Action Cards */
+        .quick-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
         .q-card { background: var(--white); padding: 22px; border-radius: 5px; box-shadow: 0 2px 10px rgba(15,23,42,0.06); border: 1px solid #e2e8f0; border-bottom: 3px solid var(--brand-blue); transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit; }
         .q-card:hover { transform: translateY(-3px); border-bottom-color: var(--brand-red); box-shadow: 0 8px 20px rgba(15,23,42,0.12); }
         .q-card-icon { width: 40px; height: 40px; background: var(--brand-blue-light); color: var(--brand-blue); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; transition: 0.2s; }
@@ -166,7 +159,6 @@
         .footer-links a:hover { color: #fca5a5; text-decoration: underline; }
 
         @media (max-width: 720px) {
-            .nav-links { gap: 12px; font-size: 0.74rem; }
             .quick-cards, .meta-grid, .division-grid, .form-grid-2, .terms-mini-grid { grid-template-columns: 1fr; }
             .track-input-group { flex-direction: column; border: none; gap: 8px; }
             .track-input-group input { border: 2px solid var(--brand-blue); border-radius: 4px; }
@@ -177,36 +169,23 @@
 </head>
 <body>
 
-    <!-- Top Utility Helpline Strip -->
-    <div class="utility-bar">
-        <div class="utility-inner">
-            <div>Global Air Express & International Freight Forwarding</div>
-            <div class="utility-contact">
-                <a href="tel:+923256929628">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    24/7 Dispatch & Support: +92 325 6929628
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Blue & Red Corporate Navigation -->
+    <!-- Clean Navigation Header with 3-Line Hamburger Menu -->
     <header class="top-nav">
         <div class="nav-inner">
-            <div class="nav-links">
-                <a href="/track" onclick="navigateTo(event, '/track')">Track</a>
-                <a href="/free-pickup" onclick="navigateTo(event, '/free-pickup')">Free Pickup</a>
-                <a href="/get-quote" onclick="navigateTo(event, '/get-quote')">Get a Quote</a>
-                <a href="/terms" onclick="navigateTo(event, '/terms')">Terms & Conditions</a>
-                <a href="/privacy-policy" onclick="navigateTo(event, '/privacy-policy')">Policies</a>
-            </div>
-            <!-- Simple User Icon Login Trigger -->
-            <button class="staff-trigger" onclick="toggleStaffPortal()" title="Login">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
+            <!-- 3-Line Hamburger Menu Button -->
+            <button class="menu-toggle" onclick="toggleMenu()" title="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
+
+            <!-- Dropdown Menu -->
+            <div id="dropdownMenu" class="dropdown-menu">
+                <a href="javascript:void(0);" onclick="openPage('home')">Home</a>
+                <a href="javascript:void(0);" onclick="openPage('terms')">Terms & Conditions</a>
+                <a href="javascript:void(0);" onclick="openPage('policy')">Privacy Policies</a>
+                <a href="javascript:void(0);" onclick="openStaffPortalFromMenu()">Login</a>
+            </div>
         </div>
     </header>
 
@@ -223,31 +202,30 @@
 
         <!-- Staff Operations Portal (Hidden by default) -->
         <section id="staffModalCard" class="staff-card" style="display:none;">
-            <h2>Operations & Dispatch Control</h2>
+            <div class="route-header">
+                <h2 style="border:none; padding:0; margin:0;">Operations & Dispatch Control</h2>
+                <button type="button" class="back-home-btn" onclick="closeStaffPortal()">Close</button>
+            </div>
             <div id="portalBody"></div>
         </section>
 
         <!-- Dedicated Sub-Page View -->
         <section id="routePageCard" class="route-page-card">
             <div class="route-header">
-                <h2 id="routePageTitle">Schedule Free Doorstep Pickup</h2>
-                <button type="button" class="back-home-btn" onclick="navigateTo(event, '/track')">Back to Tracking</button>
+                <h2 id="routePageTitle">Terms & Conditions</h2>
+                <button type="button" class="back-home-btn" onclick="openPage('home')">Back to Home</button>
             </div>
             <div id="routePageContent"></div>
         </section>
 
-        <!-- Primary Tracking View (Home / Track Page) -->
+        <!-- Primary Home View -->
         <div id="homeTrackingView">
+            
+            <!-- Tracking Box -->
             <section class="tracking-hero-card">
                 <div class="tracking-header-row">
-                    <div>
-                        <h1>Track Your Shipment</h1>
-                        <p class="subtitle">Enter your Waybill Number to view real-time global transit milestones.</p>
-                    </div>
-                    <a href="https://wa.me/923256929628" target="_blank" class="direct-helpline-badge">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                        WhatsApp Desk: +92 325 6929628
-                    </a>
+                    <h1>Track Your Shipment</h1>
+                    <p class="subtitle">Enter your Waybill Number to view real-time global transit milestones.</p>
                 </div>
                 
                 <div class="track-input-group">
@@ -259,40 +237,29 @@
                 <div id="resultBox" style="display:none;"></div>
             </section>
 
-            <!-- Functional 3 Quick Action Cards -->
+            <!-- Quick Action Cards (Only Terms & Privacy Policies) -->
             <section class="quick-cards">
-                <a href="/free-pickup" class="q-card" onclick="navigateTo(event, '/free-pickup')">
+                <div class="q-card" onclick="openPage('terms')">
                     <div>
                         <div class="q-card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                         </div>
-                        <h3>Book Free Pickup</h3>
-                        <p>Schedule a complimentary courier pickup directly from your home, office, or warehouse.</p>
+                        <h3>Terms of Carriage</h3>
+                        <p>Review standard operating guidelines, duties, and international shipping policies.</p>
                     </div>
-                    <div class="q-card-link">Schedule Pickup Now &rarr;</div>
-                </a>
+                    <div class="q-card-link">View Guidelines &rarr;</div>
+                </div>
 
-                <a href="/get-quote" class="q-card" onclick="navigateTo(event, '/get-quote')">
+                <div class="q-card" onclick="openPage('policy')">
                     <div>
                         <div class="q-card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                         </div>
-                        <h3>Get a Shipping Quote</h3>
-                        <p>Request instant commercial air cargo and international parcel rates for any destination.</p>
+                        <h3>Privacy Policies</h3>
+                        <p>Read about our data protection and information security standards.</p>
                     </div>
-                    <div class="q-card-link">Calculate Rate &rarr;</div>
-                </a>
-
-                <a href="/support" class="q-card" onclick="navigateTo(event, '/support')">
-                    <div>
-                        <div class="q-card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        </div>
-                        <h3>Dispatch & Helpline</h3>
-                        <p>Connect directly with our logistics desk at +92 325 6929628 for urgent bookings.</p>
-                    </div>
-                    <div class="q-card-link">Contact Desk &rarr;</div>
-                </a>
+                    <div class="q-card-link">View Policies &rarr;</div>
+                </div>
             </section>
 
             <!-- Enterprise Logistics Divisions -->
@@ -345,64 +312,67 @@
                 </div>
             </div>
             <div class="terms-action-links">
-                <a href="/terms" onclick="navigateTo(event, '/terms')">Read Complete Terms & Conditions &rarr;</a>
-                <a href="/privacy-policy" onclick="navigateTo(event, '/privacy-policy')">Read Privacy & Operational Policies &rarr;</a>
+                <a href="javascript:void(0);" onclick="openPage('terms')">Read Complete Terms & Conditions &rarr;</a>
+                <a href="javascript:void(0);" onclick="openPage('policy')">Read Privacy & Operational Policies &rarr;</a>
             </div>
         </section>
 
     </main>
 
-    <!-- Corporate Footer with Terms & Policies -->
+    <!-- Corporate Footer -->
     <footer id="footerSec" class="corp-footer">
         <div class="footer-inner">
             <div class="footer-links">
-                <a href="/track" onclick="navigateTo(event, '/track')">Track Shipment</a>
-                <a href="/free-pickup" onclick="navigateTo(event, '/free-pickup')">Free Pickup</a>
-                <a href="/get-quote" onclick="navigateTo(event, '/get-quote')">Get a Quote</a>
-                <a href="/terms" onclick="navigateTo(event, '/terms')">Terms & Conditions</a>
-                <a href="/privacy-policy" onclick="navigateTo(event, '/privacy-policy')">Privacy & Shipping Policies</a>
-                <a href="/support" onclick="navigateTo(event, '/support')">Support: +92 325 6929628</a>
+                <a href="javascript:void(0);" onclick="openPage('home')">Home</a>
+                <a href="javascript:void(0);" onclick="openPage('terms')">Terms & Conditions</a>
+                <a href="javascript:void(0);" onclick="openPage('policy')">Privacy & Shipping Policies</a>
             </div>
             <div>2026 AK Worldwide Express. All rights reserved.</div>
         </div>
     </footer>
 
-    <!-- URL Routing & Page Navigation Script -->
+    <!-- Hamburger Menu & Page Navigation Script -->
     <script>
-        const COMPANY_WHATSAPP = "923256929628";
-        const COMPANY_DISPLAY_PHONE = "+92 325 6929628";
-
-        function navigateTo(event, route) {
-            if (event) event.preventDefault();
-            const cleanRoute = route.toLowerCase().replace(/\/+$/, '') || '/track';
-
-            // Update URL via pushState (clean paths: /track, /free-pickup, etc.)
-            if (window.location.protocol.startsWith('http')) {
-                window.history.pushState({ route: cleanRoute }, '', cleanRoute);
-            }
-            renderRoute(cleanRoute);
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('active');
         }
 
-        window.addEventListener('popstate', () => {
-            const currentPath = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/track';
-            renderRoute(currentPath);
+        window.addEventListener('click', function(e) {
+            const menu = document.getElementById('dropdownMenu');
+            const toggleBtn = document.querySelector('.menu-toggle');
+            if (!menu.contains(e.target) && !toggleBtn.contains(e.target)) {
+                menu.classList.remove('active');
+            }
         });
 
-        function renderRoute(route) {
+        function openStaffPortalFromMenu() {
+            document.getElementById('dropdownMenu').classList.remove('active');
+            const m = document.getElementById('staffModalCard');
+            m.style.display = 'block';
+            m.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function closeStaffPortal() {
+            document.getElementById('staffModalCard').style.display = 'none';
+        }
+
+        function openPage(pageKey) {
+            document.getElementById('dropdownMenu').classList.remove('active');
+
             const homeView = document.getElementById('homeTrackingView');
             const routeCard = document.getElementById('routePageCard');
             const routeTitle = document.getElementById('routePageTitle');
             const routeContent = document.getElementById('routePageContent');
             const alwaysTerms = document.getElementById('alwaysTermsSection');
 
-            const cleanRoute = route.toLowerCase().replace(/\/+$/, '') || '/track';
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            if (cleanRoute === '' || cleanRoute === '/' || cleanRoute === '/track' || cleanRoute === '/index.html') {
+            if (pageKey === 'home') {
                 homeView.style.display = 'block';
                 routeCard.style.display = 'none';
                 alwaysTerms.style.display = 'block';
-                document.title = "AK Worldwide Express | International Courier & Global Logistics";
+                document.title = "AK Worldwide Express";
                 setTimeout(() => {
                     const searchInput = document.getElementById('searchId');
                     if (searchInput) searchInput.focus();
@@ -413,83 +383,7 @@
             homeView.style.display = 'none';
             routeCard.style.display = 'block';
 
-            if (cleanRoute === '/free-pickup') {
-                alwaysTerms.style.display = 'block';
-                document.title = "Free Doorstep Pickup | AK Worldwide Express";
-                routeTitle.innerText = "Schedule Free Doorstep Pickup";
-                routeContent.innerHTML = `
-                    <p style="font-size:0.88rem; color:#475569; margin-top:0;">Book a complimentary courier pickup from your doorstep anywhere in Lahore. For immediate dispatch assistance, call or WhatsApp <strong>${COMPANY_DISPLAY_PHONE}</strong>.</p>
-                    <div class="form-grid-2">
-                        <div>
-                            <label>Sender Full Name *</label>
-                            <input type="text" id="puName" placeholder="Enter your full name">
-                        </div>
-                        <div>
-                            <label>Contact Phone / WhatsApp *</label>
-                            <input type="text" id="puPhone" placeholder="e.g., 0300-1234567">
-                        </div>
-                    </div>
-                    <div class="form-grid-2">
-                        <div>
-                            <label>Pickup City & Complete Address *</label>
-                            <input type="text" id="puAddress" placeholder="House/Office #, Street, Area, City">
-                        </div>
-                        <div>
-                            <label>Destination Country / City *</label>
-                            <input type="text" id="puDest" placeholder="e.g., United Kingdom, UAE, USA">
-                        </div>
-                    </div>
-                    <div class="form-grid-2">
-                        <div>
-                            <label>Approx. Weight & Number of Boxes</label>
-                            <input type="text" id="puWeight" placeholder="e.g., 5 KG / 1 Carton">
-                        </div>
-                        <div>
-                            <label>Preferred Pickup Time Slot</label>
-                            <select id="puTime">
-                                <option value="Immediate / Today">Immediate / Today</option>
-                                <option value="Morning (10:00 AM - 01:00 PM)">Morning (10:00 AM - 01:00 PM)</option>
-                                <option value="Afternoon (01:00 PM - 05:00 PM)">Afternoon (01:00 PM - 05:00 PM)</option>
-                                <option value="Evening (05:00 PM - 08:00 PM)">Evening (05:00 PM - 08:00 PM)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn-red" onclick="submitPickupRequest()">Confirm Free Pickup Request</button>
-                `;
-            } else if (cleanRoute === '/get-quote') {
-                alwaysTerms.style.display = 'block';
-                document.title = "Get a Shipping Quote | AK Worldwide Express";
-                routeTitle.innerText = "International Shipping Rate Inquiry";
-                routeContent.innerHTML = `
-                    <p style="font-size:0.88rem; color:#475569; margin-top:0;">Request competitive per-KG commercial and express courier rates directly from our pricing desk.</p>
-                    <div class="form-grid-2">
-                        <div>
-                            <label>Destination Country *</label>
-                            <input type="text" id="qtDest" placeholder="e.g., UK, USA, Canada, Saudi Arabia">
-                        </div>
-                        <div>
-                            <label>Estimated Shipment Weight (KG) *</label>
-                            <input type="text" id="qtWeight" placeholder="e.g., 3.5 KG">
-                        </div>
-                    </div>
-                    <div class="form-grid-2">
-                        <div>
-                            <label>Commodity / Shipment Type</label>
-                            <select id="qtType">
-                                <option value="Non-Document / Commercial Parcel">Non-Document / Commercial Parcel</option>
-                                <option value="Urgent Documents">Urgent Documents</option>
-                                <option value="Garments / Textiles">Garments / Textiles</option>
-                                <option value="Heavy Air Cargo (20+ KG)">Heavy Air Cargo (20+ KG)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>Your Mobile / WhatsApp Number *</label>
-                            <input type="text" id="qtPhone" placeholder="Enter mobile number">
-                        </div>
-                    </div>
-                    <button class="btn-red" onclick="submitQuoteRequest()">Get Instant Rate on WhatsApp</button>
-                `;
-            } else if (cleanRoute === '/terms') {
+            if (pageKey === 'terms') {
                 alwaysTerms.style.display = 'none';
                 document.title = "Terms & Conditions | AK Worldwide Express";
                 routeTitle.innerText = "Terms and Conditions of Carriage";
@@ -516,7 +410,7 @@
                         <p>AK Worldwide Express is not liable for delays or loss caused by circumstances beyond carrier control, including customs holds, flight cancellations, severe weather, civil unrest, or natural disasters.</p>
                     </div>
                 `;
-            } else if (cleanRoute === '/privacy-policy') {
+            } else if (pageKey === 'policy') {
                 alwaysTerms.style.display = 'none';
                 document.title = "Privacy & Operational Policies | AK Worldwide Express";
                 routeTitle.innerText = "Privacy, Security & Shipping Policies";
@@ -536,90 +430,13 @@
 
                         <h3>4. Volumetric vs. Actual Weight Policy</h3>
                         <p>International air freight charges are calculated based on either actual gross weight or volumetric weight (Length x Width x Height in cm / 5000), whichever is greater, in accordance with IATA standards.</p>
-
-                        <h3>5. Contact Data Protection & Compliance Desk</h3>
-                        <p>For any inquiries regarding data privacy, shipment documentation, or policy compliance, contact our operations desk at <strong>${COMPANY_DISPLAY_PHONE}</strong>.</p>
-                    </div>
-                `;
-            } else if (cleanRoute === '/support') {
-                alwaysTerms.style.display = 'block';
-                document.title = "Customer Support & Dispatch | AK Worldwide Express";
-                routeTitle.innerText = "24/7 Dispatch & Customer Support Desk";
-                routeContent.innerHTML = `
-                    <div class="form-grid-2">
-                        <div class="div-box">
-                            <h4>Direct Helpline & WhatsApp</h4>
-                            <p style="margin-bottom:10px;">Speak directly with our operations team for urgent international bookings, free pickup coordination, and customs queries.</p>
-                            <strong style="font-size:1.15rem; color:#172554; display:block; margin-bottom:14px;">${COMPANY_DISPLAY_PHONE}</strong>
-                            <div style="display:flex; gap:10px;">
-                                <a href="tel:+${COMPANY_WHATSAPP}" style="flex:1; text-align:center; background:#1e3a8a; color:#fff; padding:11px; border-radius:4px; text-decoration:none; font-size:0.82rem; font-weight:800; text-transform:uppercase;">Call Now</a>
-                                <a href="https://wa.me/${COMPANY_WHATSAPP}" target="_blank" style="flex:1; text-align:center; background:#dc2626; color:#fff; padding:11px; border-radius:4px; text-decoration:none; font-size:0.82rem; font-weight:800; text-transform:uppercase;">WhatsApp Chat</a>
-                            </div>
-                        </div>
-                        <div class="div-box">
-                            <h4>Operating Hours & Services</h4>
-                            <p><strong>Free Pickup Service:</strong> Monday to Saturday (09:00 AM – 09:00 PM)</p>
-                            <p style="margin-top:8px;"><strong>Air Freight & Express Dispatch:</strong> Daily international flight connections from Lahore to UK, Europe, USA, Middle East & Worldwide.</p>
-                        </div>
                     </div>
                 `;
             }
-        }
-
-        // Initial route check on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            const initialPath = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/track';
-            renderRoute(initialPath);
-        });
-
-        function submitPickupRequest() {
-            const name = document.getElementById('puName').value.trim();
-            const phone = document.getElementById('puPhone').value.trim();
-            const addr = document.getElementById('puAddress').value.trim();
-            const dest = document.getElementById('puDest').value.trim();
-            const weight = document.getElementById('puWeight').value.trim() || 'Not specified';
-            const time = document.getElementById('puTime').value;
-
-            if (!name || !phone || !addr || !dest) {
-                alert("Please fill in Name, Phone, Pickup Address, and Destination.");
-                return;
-            }
-
-            const msg = `*FREE PICKUP REQUEST - AK WORLDWIDE EXPRESS*%0A` +
-                        `------------------------------------%0A` +
-                        `*Sender Name:* ${encodeURIComponent(name)}%0A` +
-                        `*Phone:* ${encodeURIComponent(phone)}%0A` +
-                        `*Pickup Address:* ${encodeURIComponent(addr)}%0A` +
-                        `*Destination:* ${encodeURIComponent(dest)}%0A` +
-                        `*Weight/Boxes:* ${encodeURIComponent(weight)}%0A` +
-                        `*Preferred Time:* ${encodeURIComponent(time)}`;
-
-            window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`, '_blank');
-        }
-
-        function submitQuoteRequest() {
-            const dest = document.getElementById('qtDest').value.trim();
-            const weight = document.getElementById('qtWeight').value.trim();
-            const type = document.getElementById('qtType').value;
-            const phone = document.getElementById('qtPhone').value.trim();
-
-            if (!dest || !weight || !phone) {
-                alert("Please enter Destination, Weight, and your Contact Number.");
-                return;
-            }
-
-            const msg = `*SHIPPING RATE INQUIRY - AK WORLDWIDE EXPRESS*%0A` +
-                        `------------------------------------%0A` +
-                        `*Destination:* ${encodeURIComponent(dest)}%0A` +
-                        `*Weight:* ${encodeURIComponent(weight)}%0A` +
-                        `*Category:* ${encodeURIComponent(type)}%0A` +
-                        `*Customer Phone:* ${encodeURIComponent(phone)}`;
-
-            window.open(`https://wa.me/${COMPANY_WHATSAPP}?text=${msg}`, '_blank');
         }
     </script>
 
-    <!-- Firebase & Application Logic with Auto-Fill Feature -->
+    <!-- Firebase & Auto-Fill Staff Operations Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, child, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -638,14 +455,6 @@
         const app = initializeApp(cfg), db = getDatabase(app), auth = getAuth(app);
 
         signOut(auth).catch(() => {});
-
-        window.toggleStaffPortal = function() {
-            const m = document.getElementById('staffModalCard');
-            m.style.display = m.style.display === 'none' ? 'block' : 'none';
-            if (m.style.display === 'block') {
-                m.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        };
 
         onAuthStateChanged(auth, (user) => {
             const pb = document.getElementById('portalBody');
@@ -734,7 +543,7 @@
             }
         });
 
-        // Auto-Fill Function when Waybill Number is entered and focus leaves input
+        // Auto-Fill Function when Waybill Number is entered
         window.checkExistingWaybill = function() {
             const id = document.getElementById('trackingId').value.trim().toUpperCase();
             if(!id) return;
@@ -763,9 +572,7 @@
             localStorage.setItem('ak_staff_email', e);
             localStorage.setItem('ak_staff_pass', p);
 
-            signInWithEmailAndPassword(auth, e, p)
-                .then(() => {})
-                .catch(err => { alert("Authentication Failed: " + err.message); });
+            signInWithEmailAndPassword(auth, e, p).catch(err => { alert("Authentication Failed: " + err.message); });
         };
 
         window.logoutStaff = function() {
@@ -873,7 +680,7 @@
                     rb.innerHTML = `
                         <div class="result-panel" style="padding:20px; border-left: 4px solid #dc2626;">
                             <strong style="color:#dc2626; font-size:0.95rem;">No result found for tracking number: ${id}</strong>
-                            <p style="margin:6px 0 0 0; font-size:0.85rem; color:#475569;">Please check the waybill number entered and try again, or contact our dispatch desk at <strong>+92 325 6929628</strong>.</p>
+                            <p style="margin:6px 0 0 0; font-size:0.85rem; color:#475569;">Please check the waybill number entered and try again.</p>
                         </div>
                     `;
                 }
