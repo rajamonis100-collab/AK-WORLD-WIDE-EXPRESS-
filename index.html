@@ -237,7 +237,7 @@
                 <div id="resultBox" style="display:none;"></div>
             </section>
 
-            <!-- Quick Action Cards (Only Terms & Privacy Policies) -->
+            <!-- Quick Action Cards -->
             <section class="quick-cards">
                 <div class="q-card" onclick="openPage('terms')">
                     <div>
@@ -656,15 +656,21 @@
                         th += `</div></div>`;
                     }
 
+                    // Hide "Shipment Active" bar if status contains "delivered"
+                    const isDelivered = d.status && d.status.toLowerCase().includes('delivered');
+                    const progressHtml = isDelivered ? '' : `
+                        <div class="progress-track">
+                            <div class="p-step"><div class="p-bar"></div>Shipment Active</div>
+                        </div>
+                    `;
+
                     rb.innerHTML = `
                         <div class="result-panel">
                             <div class="result-header">
                                 <div class="waybill-badge">Tracking Code<strong>${id}</strong></div>
                                 <div class="status-pill">${d.status}</div>
                             </div>
-                            <div class="progress-track">
-                                <div class="p-step"><div class="p-bar"></div>Shipment Active</div>
-                            </div>
+                            ${progressHtml}
                             <div class="meta-grid">
                                 <div class="meta-cell"><span>Origin Service Area</span><strong>${d.origin || 'Lahore, Pakistan'}</strong></div>
                                 <div class="meta-cell"><span>Destination Service Area</span><strong>${d.destination || 'International'}</strong></div>
